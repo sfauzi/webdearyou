@@ -9,7 +9,7 @@ import { Link } from '@inertiajs/vue3'
             <Link href="/" class="text-xl font-bold font-milo">DearYou</Link>
             <div class="space-x-4">
                 <Link href="/submit">Submit</Link>
-                <Link href="/">Browse</Link>
+                <Link href="/browse">Browse</Link>
                 <Link href="/">History</Link>
                 <Link href="/">Support</Link>
             </div>

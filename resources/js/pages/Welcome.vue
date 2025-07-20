@@ -5,13 +5,13 @@ import { route } from 'ziggy-js';
 import { defineProps } from 'vue';
 
 
-const props = defineProps(['currentDateTime']); 
+const props = defineProps(['currentDateTime']);
 
 </script>
 
 <template>
 
-    <Head title="For everything you couldn’t say" >
+    <Head title="For everything you couldn’t say">
         <link rel="preconnect" href="https://rsms.me/" />
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
     </Head>
@@ -38,16 +38,16 @@ const props = defineProps(['currentDateTime']);
                         d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4 12.5-12.5z" />
                 </svg>
                 </Link>
-                <button
+                <Link :href="route('browse')"
                     class="px-6 py-2 border border-gray-300 text-slate-800 rounded-md hover:bg-gray-100 transition flex items-center gap-2">
-                    Browse the Stories
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2" fill="none" />
-                        <line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" />
-                    </svg>
-                </button>
+                Browse the Stories
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2" fill="none" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" />
+                </svg>
+                </Link>
             </div>
         </div>
 
