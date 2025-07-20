@@ -104,7 +104,8 @@ const submitForm = () => {
                             form.recipient_name || 'your recipient' }}</span>
                     </div>
                     <div class="text-left text-base sm:text-lg text-slate-500 mb-4">
-                        i have a, <span class="text-xl sm:text-2xl font-milo font-bold text-slate-950">{{ form.message
+                        i want to say, <span class="text-xl sm:text-2xl font-milo font-bold text-slate-950">{{
+                            form.message
                             || 'your message' }}</span>
                     </div>
                     <div class="flex flex-row justify-between items-center mt-6 gap-2">

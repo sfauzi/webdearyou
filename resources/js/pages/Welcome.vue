@@ -2,11 +2,16 @@
 import MasterLayout from '@/layouts/MasterLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
+import { defineProps } from 'vue';
+
+
+const props = defineProps(['currentDateTime']); 
+
 </script>
 
 <template>
 
-    <Head title="SendTheSong">
+    <Head title="For everything you couldn’t say" >
         <link rel="preconnect" href="https://rsms.me/" />
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
     </Head>
@@ -15,22 +20,23 @@ import { route } from 'ziggy-js';
         <div
             class="container mx-auto px-4 py-8 flex flex-col items-center justify-center text-center max-w-2xl sm:max-w-3xl md:max-w-5xl lg:max-w-7xl">
             <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 text-slate-800 font-milo leading-tight">
-                a bunch of the untold words,<br>
-                <span class="block">sent through the song</span>
+                dear you,<br>
+                <span class="block">for everything you couldn't say</span>
             </h1>
-            <p class="text-base sm:text-lg text-slate-700 mb-6">
-                Express your untold message through the song.
+            <p class="max-w-2xl text-base sm:text-lg text-slate-700 mb-6">
+                let your love, your apology, your gratitude all the words left unspoken find their voice through a
+                heartfelt message.
             </p>
             <div class="flex flex-row justify-center gap-4 font-semibold">
                 <Link :href="route('submit')"
                     class="px-6 py-2 bg-slate-900 text-white rounded hover:bg-slate-800 transition flex items-center gap-2">
-                    Tell your story
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 20h9" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4 12.5-12.5z" />
-                    </svg>
+                Tell your story
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 20h9" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4 12.5-12.5z" />
+                </svg>
                 </Link>
                 <button
                     class="px-6 py-2 border border-gray-300 text-slate-800 rounded-md hover:bg-gray-100 transition flex items-center gap-2">
@@ -51,15 +57,15 @@ import { route } from 'ziggy-js';
                 <!-- Card Content -->
                 <div class="p-4 sm:p-6 flex flex-col">
                     <div class="text-left text-base sm:text-lg text-slate-500 mb-2">
-                        hello <span class="text-xl sm:text-2xl font-milo font-bold text-slate-950">world</span>
+                        hello <span class="text-xl sm:text-2xl font-milo font-bold text-slate-950">lani</span>
                     </div>
                     <div class="text-left text-base sm:text-lg text-slate-500 mb-4">
-                        i have a, <span class="text-xl sm:text-2xl font-milo font-bold text-slate-950">crush on
-                            you</span>
+                        i want to say, <span class="text-xl sm:text-2xl font-milo font-bold text-slate-950">i hope that
+                            one day we can meet again,... i miss you</span>
                     </div>
                     <div class="flex flex-row justify-between items-center mt-6 gap-2">
                         <span class="text-slate-800 font-milo font-black">syah</span>
-                        <span class="text-slate-500 text-xs sm:text-sm">Sun 20 Jul 2025, 10:48 am</span>
+                        <span class="text-slate-500 text-xs sm:text-sm">{{ currentDateTime }}</span>
                     </div>
 
                 </div>

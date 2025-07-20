@@ -1,13 +1,13 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SubmitController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome');
-})->name('home');
 
+
+Route::get('/', [HomeController::class, 'home'])->name('home');
 Route::get('submit', [SubmitController::class, 'submit'])->name('submit');
 Route::post('/submit', [SubmitController::class, 'store'])->name('submit.store');
 
