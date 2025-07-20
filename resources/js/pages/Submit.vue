@@ -1,50 +1,18 @@
 <script setup lang="ts">
 import MasterLayout from '@/layouts/MasterLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
-import { route } from 'ziggy-js';
+import { Head } from '@inertiajs/vue3';
+
+
+
 </script>
 
 <template>
 
-    <Head title="SendTheSong">
-        <link rel="preconnect" href="https://rsms.me/" />
-        <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+    <Head title="Submit">
+
     </Head>
 
     <MasterLayout>
-        <div
-            class="container mx-auto px-4 py-8 flex flex-col items-center justify-center text-center max-w-2xl sm:max-w-3xl md:max-w-5xl lg:max-w-7xl">
-            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 text-slate-800 font-milo leading-tight">
-                a bunch of the untold words,<br>
-                <span class="block">sent through the song</span>
-            </h1>
-            <p class="text-base sm:text-lg text-slate-700 mb-6">
-                Express your untold message through the song.
-            </p>
-            <div class="flex flex-row justify-center gap-4 font-semibold">
-                <Link :href="route('submit')"
-                    class="px-6 py-2 bg-slate-900 text-white rounded hover:bg-slate-800 transition flex items-center gap-2">
-                    Tell your story
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 20h9" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4 12.5-12.5z" />
-                    </svg>
-                </Link>
-                <button
-                    class="px-6 py-2 border border-gray-300 text-slate-800 rounded-md hover:bg-gray-100 transition flex items-center gap-2">
-                    Browse the Stories
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2" fill="none" />
-                        <line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" />
-                    </svg>
-                </button>
-            </div>
-        </div>
-
         <div class="flex justify-center py-10 px-2">
             <div
                 class="rounded-xl border shadow-lg border-gray-200 w-full max-w-md sm:max-w-lg md:max-w-xl flex flex-col bg-white">
@@ -104,5 +72,29 @@ import { route } from 'ziggy-js';
 
             </div>
         </div>
+
+        <div class="flex justify-center pb-10 px-2">
+            <form class="w-full max-w-md sm:max-w-lg md:max-w-xl flex flex-col gap-4">
+                <input type="text" placeholder="Your Name"
+                    class="text-slate-900 border border-gray-300 rounded-lg px-3 py-2 text-base focus:outline-none focus:ring-1 focus:ring-slate-800"
+                    required />
+                <textarea placeholder="Your Message"
+                    class="text-slate-900 border border-gray-300  rounded-lg px-3 py-2 text-base focus:outline-none focus:ring-1 focus:ring-slate-800 resize-none"
+                    rows="3" required></textarea>
+                <input type="text" placeholder="Recipient Name"
+                    class="text-slate-900 border border-gray-300 rounded-lg px-3 py-2 text-base focus:outline-none focus:ring-1 focus:ring-slate-800"
+                    required />
+
+                <button type="submit"
+                    class="bg-slate-800 text-white font-bold py-2 px-4 rounded-lg w-full hover:bg-slate-700 transition">
+                    Submit
+                </button>
+            </form>
+        </div>
+
+
+
     </MasterLayout>
+
+
 </template>

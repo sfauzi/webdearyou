@@ -6,9 +6,9 @@ import { Link } from '@inertiajs/vue3'
 <template>
     <nav class="bg-white border-b-1 border-gray-300 p-4 text-slate-800">
         <div class="container mx-auto flex justify-between items-center">
-            <div class="text-xl font-bold font-milo">SendTheSong</div>
+            <Link href="/" class="text-xl font-bold font-milo">SendTheSong</Link>
             <div class="space-x-4">
-                <Link href="/">Submit</Link>
+                <Link href="/submit">Submit</Link>
                 <Link href="/">Browse</Link>
                 <Link href="/">History</Link>
                 <Link href="/">Support</Link>
