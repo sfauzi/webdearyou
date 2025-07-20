@@ -10,7 +10,7 @@ import { Link } from '@inertiajs/vue3'
             <div class="space-x-4">
                 <Link href="/submit">Submit</Link>
                 <Link href="/browse">Browse</Link>
-                <Link href="/">History</Link>
+                <!-- <Link href="/">History</Link> -->
                 <Link href="/">Support</Link>
             </div>
         </div>

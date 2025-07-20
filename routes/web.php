@@ -11,6 +11,7 @@ use Inertia\Inertia;
 Route::get('/', [HomeController::class, 'home'])->name('home');
 Route::get('/submit', [SubmitController::class, 'submit'])->name('submit');
 Route::get('/browse', [BrowseController::class, 'browse'])->name('browse');
+Route::get('/browse/load-more', [BrowseController::class, 'loadMore'])->name('browse.load-more');
 Route::get('/detail/{id}', [BrowseController::class, 'detail'])->name('detail');
 Route::post('/submit', [SubmitController::class, 'store'])->name('submit.store');
 

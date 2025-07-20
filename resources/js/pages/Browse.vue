@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import MasterLayout from '@/layouts/MasterLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { ref, onMounted, onUnmounted, watch } from 'vue';
 import { router } from '@inertiajs/vue3';
+import axios from 'axios';
 
 const props = defineProps<{
     confessions: {
@@ -13,28 +14,94 @@ const props = defineProps<{
         created_at: string;
     }[];
     search: string | null;
+    hasMore: boolean;
+    currentPage: number;
+    totalPages: number;
 }>();
 
 const searchQuery = ref(props.search || '');
+const confessions = ref([...props.confessions]);
+const isLoading = ref(false);
+const hasMore = ref(props.hasMore);
+const currentPage = ref(props.currentPage);
 
+// Watch untuk perubahan props (ketika search dilakukan)
+watch(() => props.confessions, (newConfessions) => {
+    confessions.value = [...newConfessions];
+});
+
+watch(() => props.hasMore, (newHasMore) => {
+    hasMore.value = newHasMore;
+});
+
+watch(() => props.currentPage, (newCurrentPage) => {
+    currentPage.value = newCurrentPage;
+});
+
+// Function untuk submit search
 const submitSearch = () => {
     router.visit(route('browse'), {
         method: 'get',
         data: { search: searchQuery.value },
-        preserveState: true,
-        preserveScroll: true,
+        preserveState: false,
+        preserveScroll: false,
     });
 };
 
+// Function untuk load more data
+const loadMoreData = async () => {
+    if (isLoading.value || !hasMore.value) return;
+
+    isLoading.value = true;
+
+    try {
+        const nextPage = currentPage.value + 1;
+        const response = await axios.get(route('browse.load-more'), {
+            params: {
+                page: nextPage,
+                search: searchQuery.value
+            }
+        });
+
+        const data = response.data;
+
+        // Tambahkan data baru ke array existing
+        confessions.value = [...confessions.value, ...data.confessions];
+        hasMore.value = data.hasMore;
+        currentPage.value = data.currentPage;
+
+    } catch (error) {
+        console.error('Error loading more data:', error);
+    } finally {
+        isLoading.value = false;
+    }
+};
+
+// Infinite scroll handler
+const handleScroll = () => {
+    const scrollPosition = window.innerHeight + window.scrollY;
+    const documentHeight = document.documentElement.offsetHeight;
+
+    // Trigger load more ketika hampir sampai bawah (100px sebelum bottom)
+    if (scrollPosition >= documentHeight - 100) {
+        loadMoreData();
+    }
+};
+
+// Setup scroll listener
+onMounted(() => {
+    window.addEventListener('scroll', handleScroll);
+});
+
+onUnmounted(() => {
+    window.removeEventListener('scroll', handleScroll);
+});
 </script>
 
 <template>
-
     <MasterLayout>
 
-        <Head title="Browse Stories">
-
-        </Head>
+        <Head title="Browse Stories"></Head>
 
         <div class="flex justify-center mt-6 px-2">
             <div
@@ -66,7 +133,6 @@ const submitSearch = () => {
 
         <div class="flex justify-center py-10 px-2">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-2xl">
-                <!-- Card 1 -->
                 <Link v-for="confession in confessions" :key="confession.id"
                     :href="route('detail', { id: confession.id })"
                     class="rounded-xl border shadow-lg border-gray-200 flex flex-col bg-white">
@@ -129,18 +195,34 @@ const submitSearch = () => {
                     </div>
                 </div>
                 </Link>
-
             </div>
-
         </div>
-        <div>
-            <p v-if="confessions.length === 0" class="text-slate-500 text-center">
+
+        <!-- Loading indicator -->
+        <div v-if="isLoading" class="flex justify-center py-8">
+            <div class="flex items-center space-x-2">
+                <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-slate-800"></div>
+                <span class="text-slate-600">Loading more messages...</span>
+            </div>
+        </div>
+
+        <!-- No more data indicator -->
+        <div v-if="!hasMore && confessions.length > 0" class="flex justify-center py-8">
+            <span class="text-slate-500">No more messages to load</span>
+        </div>
+
+        <!-- No messages found -->
+        <div v-if="confessions.length === 0 && searchQuery">
+            <p class="text-slate-500 text-center">
                 No messages found for "<strong>{{ searchQuery }}</strong>"
             </p>
         </div>
 
-
-
+        <!-- No messages at all -->
+        <div v-if="confessions.length === 0 && !searchQuery">
+            <p class="text-slate-500 text-center">
+                No messages available
+            </p>
+        </div>
     </MasterLayout>
-
 </template>
