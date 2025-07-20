@@ -27,9 +27,9 @@ const props = defineProps(['currentDateTime']);
                 let your love, your apology, your gratitude all the words left unspoken find their voice through a
                 heartfelt message.
             </p>
-            <div class="flex flex-row justify-center gap-4 font-semibold">
+            <div class="flex flex-col sm:flex-row justify-center gap-4 font-semibold w-full sm:w-auto">
                 <Link :href="route('submit')"
-                    class="px-6 py-2 bg-slate-900 text-white rounded hover:bg-slate-800 transition flex items-center gap-2">
+                    class="px-6 py-2 bg-slate-900 text-white rounded hover:bg-slate-800 transition flex items-center justify-center gap-2 w-full sm:w-auto">
                 Tell your story
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
@@ -39,7 +39,7 @@ const props = defineProps(['currentDateTime']);
                 </svg>
                 </Link>
                 <Link :href="route('browse')"
-                    class="px-6 py-2 border border-gray-300 text-slate-800 rounded-md hover:bg-gray-100 transition flex items-center gap-2">
+                    class="px-6 py-2 border border-gray-300 text-slate-800 rounded-md hover:bg-gray-100 transition flex items-center justify-center gap-2 w-full sm:w-auto">
                 Browse the Stories
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
@@ -57,14 +57,14 @@ const props = defineProps(['currentDateTime']);
                 <!-- Card Content -->
                 <div class="p-4 sm:p-6 flex flex-col">
                     <div class="text-left text-base sm:text-lg text-slate-500 mb-2">
-                        hello <span class="text-xl sm:text-2xl font-milo font-bold text-slate-950">lani</span>
+                        hello <span class="text-xl sm:text-2xl font-milo font-bold text-slate-950">anjani</span>
                     </div>
                     <div class="text-left text-base sm:text-lg text-slate-500 mb-4">
                         i want to say, <span class="text-xl sm:text-2xl font-milo font-bold text-slate-950">i hope that
                             one day we can meet again,... i miss you</span>
                     </div>
                     <div class="flex flex-row justify-between items-center mt-6 gap-2">
-                        <span class="text-slate-800 font-milo font-black">syah</span>
+                        <span class="text-slate-800 font-milo font-black">rahul</span>
                         <span class="text-slate-500 text-xs sm:text-sm">{{ currentDateTime }}</span>
                     </div>
 
