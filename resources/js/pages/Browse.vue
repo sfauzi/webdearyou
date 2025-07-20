@@ -101,7 +101,7 @@ onUnmounted(() => {
 <template>
     <MasterLayout>
 
-        <Head title="Browse Stories"></Head>
+        <Head title="Browse Untold Stories"></Head>
 
         <div class="flex justify-center mt-6 px-2">
             <div
@@ -150,12 +150,12 @@ onUnmounted(() => {
                         <span class="text-slate-800 font-milo font-black">{{ confession.sender_name }}</span>
                         <span class="text-slate-500 text-xs sm:text-sm">{{ new
                             Date(confession.created_at).toLocaleString('en-US', {
-                                weekday: 'short',
-                                day: '2-digit',
-                                month: 'short',
-                                year: 'numeric',
-                                hour: '2-digit',
-                                minute: '2-digit'
+                            weekday: 'short',
+                            day: '2-digit',
+                            month: 'short',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
                             }) }}</span>
                     </div>
                 </div>

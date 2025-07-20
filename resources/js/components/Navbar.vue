@@ -11,7 +11,7 @@ import { Link } from '@inertiajs/vue3'
                 <Link href="/submit">Submit</Link>
                 <Link href="/browse">Browse</Link>
                 <!-- <Link href="/">History</Link> -->
-                <Link href="/">Support</Link>
+                <Link href="/support">Support</Link>
             </div>
         </div>
     </nav>

@@ -49,7 +49,7 @@ const submitForm = () => {
 
 <template>
 
-    <Head title="Submit" />
+    <Head title="Send Your Untold Message" />
 
     <MasterLayout>
         <!-- Flash Messages -->

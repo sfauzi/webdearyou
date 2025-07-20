@@ -17,4 +17,9 @@ class HomeController extends Controller
             'currentDateTime' => $currentDateTime,
         ]);
     }
+
+    public function support() {
+
+        return Inertia::render('Support');
+    }
 }
