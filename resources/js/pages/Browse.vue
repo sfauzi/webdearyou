@@ -160,10 +160,10 @@ onUnmounted(() => {
                     </div>
                 </div>
                 <!-- Card Footer -->
-                <div
+                <!--<div
                     class="flex flex-col sm:flex-row items-center justify-between border-t border-gray-200 px-4 sm:px-6 py-3 sm:py-4 bg-gray-50 rounded-b-xl gap-3">
                     <div class="flex justify-between items-center w-full sm:w-auto">
-                        <!-- Song info -->
+                        <!~~ Song info ~~>
                         <div class="flex items-center">
                             <img src="https://i.scdn.co/image/ab67616d0000b273fb8b07d29db0c456d7449e14" alt="Image"
                                 class="w-9 h-9 sm:w-10 sm:h-10 rounded-full mr-2 sm:mr-3" />
@@ -172,7 +172,7 @@ onUnmounted(() => {
                                 <div class="text-xs font-medium text-slate-600">Tame Impala</div>
                             </div>
                         </div>
-                        <!-- Spotify logo on mobile (inline) -->
+                        <!~~ Spotify logo on mobile (inline) ~~>
                         <div class="sm:hidden">
                             <svg viewBox="0 0 168 168" class="w-6 h-6 text-green-500 ml-3" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -183,7 +183,7 @@ onUnmounted(() => {
                             </svg>
                         </div>
                     </div>
-                    <!-- Spotify logo on desktop -->
+                    <!~~ Spotify logo on desktop ~~>
                     <div class="hidden sm:flex items-center justify-center w-full sm:w-auto">
                         <svg viewBox="0 0 168 168" class="w-7 h-7 sm:w-8 sm:h-8 text-green-500" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
@@ -193,7 +193,7 @@ onUnmounted(() => {
                                 fill="#fff" />
                         </svg>
                     </div>
-                </div>
+                </div>-->
                 </Link>
             </div>
         </div>
