@@ -2,6 +2,16 @@
 import MasterLayout from '@/layouts/MasterLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 
+defineProps<{
+    confessions: {
+        id: string;
+        recipient_name: string;
+        message: string;
+        sender_name: string;
+        created_at: string;
+    }[]
+}>();
+
 </script>
 
 <template>
@@ -44,21 +54,30 @@ import { Head, Link } from '@inertiajs/vue3';
         <div class="flex justify-center py-10 px-2">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-2xl">
                 <!-- Card 1 -->
-                <Link :href="route('detail')"
+                <Link v-for="confession in confessions" :key="confession.id"
+                    :href="route('detail', { id: confession.id })"
                     class="rounded-xl border shadow-lg border-gray-200 flex flex-col bg-white">
                 <!-- Card Content -->
                 <div class="p-4 sm:p-6 flex flex-col">
                     <div class="text-left text-base sm:text-lg text-slate-500 mb-2">
-                        hello <span class="text-xl sm:text-2xl font-milo font-bold text-slate-950">lani</span>
+                        hello <span class="text-xl sm:text-2xl font-milo font-bold text-slate-950">{{
+                            confession.recipient_name }}</span>
                     </div>
                     <div class="text-left text-base sm:text-lg text-slate-500 mb-4">
-                        i want to say, <span class="text-xl sm:text-2xl font-milo font-bold text-slate-950">i hope
-                            that
-                            one day we can meet again,... i miss you </span>
+                        i want to say, <span class="text-xl sm:text-2xl font-milo font-bold text-slate-950">{{
+                            confession.message }} </span>
                     </div>
                     <div class="flex flex-row justify-between items-center mt-6 gap-2">
-                        <span class="text-slate-800 font-milo font-black">syah</span>
-                        <span class="text-slate-500 text-xs sm:text-sm">Sun 20 Jul 2025, 01:10 pm</span>
+                        <span class="text-slate-800 font-milo font-black">{{ confession.sender_name }}</span>
+                        <span class="text-slate-500 text-xs sm:text-sm">{{ new
+                            Date(confession.created_at).toLocaleString('en-US', {
+                                weekday: 'short',
+                                day: '2-digit',
+                                month: 'short',
+                                year: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            }) }}</span>
                     </div>
                 </div>
                 <!-- Card Footer -->
@@ -99,9 +118,9 @@ import { Head, Link } from '@inertiajs/vue3';
                 </Link>
 
                 <!-- Card 2 (duplicate for demo, replace with dynamic data as needed) -->
-                <Link :href="route('detail')"
+                <!--<Link :href="route('detail')"
                     class="rounded-xl border shadow-lg border-gray-200 flex flex-col bg-white">
-                <!-- Card Content -->
+                <!~~ Card Content ~~>
                 <div class="p-4 sm:p-6 flex flex-col">
                     <div class="text-left text-base sm:text-lg text-slate-500 mb-2">
                         hello <span class="text-xl sm:text-2xl font-milo font-bold text-slate-950">lani</span>
@@ -116,11 +135,11 @@ import { Head, Link } from '@inertiajs/vue3';
                         <span class="text-slate-500 text-xs sm:text-sm">Sun 20 Jul 2025, 01:10 pm</span>
                     </div>
                 </div>
-                <!-- Card Footer -->
+                <!~~ Card Footer ~~>
                 <div
                     class="flex flex-col sm:flex-row items-center justify-between border-t border-gray-200 px-4 sm:px-6 py-3 sm:py-4 bg-gray-50 rounded-b-xl gap-3">
                     <div class="flex justify-between items-center w-full sm:w-auto">
-                        <!-- Song info -->
+                        <!~~ Song info ~~>
                         <div class="flex items-center">
                             <img src="https://i.scdn.co/image/ab67616d0000b273fb8b07d29db0c456d7449e14" alt="Image"
                                 class="w-9 h-9 sm:w-10 sm:h-10 rounded-full mr-2 sm:mr-3" />
@@ -129,7 +148,7 @@ import { Head, Link } from '@inertiajs/vue3';
                                 <div class="text-xs font-medium text-slate-600">Tame Impala</div>
                             </div>
                         </div>
-                        <!-- Spotify logo on mobile (inline) -->
+                        <!~~ Spotify logo on mobile (inline) ~~>
                         <div class="sm:hidden">
                             <svg viewBox="0 0 168 168" class="w-6 h-6 text-green-500 ml-3" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -140,7 +159,7 @@ import { Head, Link } from '@inertiajs/vue3';
                             </svg>
                         </div>
                     </div>
-                    <!-- Spotify logo on desktop -->
+                    <!~~ Spotify logo on desktop ~~>
                     <div class="hidden sm:flex items-center justify-center w-full sm:w-auto">
                         <svg viewBox="0 0 168 168" class="w-7 h-7 sm:w-8 sm:h-8 text-green-500" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
@@ -151,7 +170,7 @@ import { Head, Link } from '@inertiajs/vue3';
                         </svg>
                     </div>
                 </div>
-                </Link>
+                </Link>-->
             </div>
         </div>
 
