@@ -9,6 +9,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('submit', [SubmitController::class, 'submit'])->name('submit');
+Route::post('/submit', [SubmitController::class, 'store'])->name('submit.store');
 
 Route::get('dashboard', function () {
     return Inertia::render('Dashboard');
