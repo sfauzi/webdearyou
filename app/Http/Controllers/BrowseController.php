@@ -8,12 +8,19 @@ use Inertia\Inertia;
 
 class BrowseController extends Controller
 {
-    public function browse()
+    public function browse(Request $request)
     {
-        $confessions = Confession::orderBy('created_at', 'desc')->get();
+        $search = $request->query('search');
+
+        $confessions = Confession::when($search, function ($query, $search) {
+            $query->where('recipient_name', 'like', '%' . $search . '%');
+        })
+            ->latest()
+            ->get();
 
         return Inertia::render('Browse', [
-            'confessions' => $confessions
+            'confessions' => $confessions,
+            'search' => $search,
         ]);
     }
 
@@ -22,7 +29,7 @@ class BrowseController extends Controller
         $confession = Confession::findOrFail($id);
 
         return Inertia::render('Detail', [
-            'confession' => $confession
+            'confession' => $confession,
         ]);
     }
 }
