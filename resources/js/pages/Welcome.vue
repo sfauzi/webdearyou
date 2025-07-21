@@ -1,11 +1,21 @@
 <script setup lang="ts">
+
 import MasterLayout from '@/layouts/MasterLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
-import { defineProps } from 'vue';
-
+import { defineProps, ref } from 'vue';
 
 const props = defineProps(['currentDateTime']);
+
+const spotifyModal = ref<HTMLElement | null>(null);
+
+const openModal = () => {
+    spotifyModal.value?.classList.remove('hidden');
+};
+
+const closeModal = () => {
+    spotifyModal.value?.classList.add('hidden');
+};
 
 </script>
 
@@ -86,18 +96,41 @@ const props = defineProps(['currentDateTime']);
 
                         <!-- Spotify logo on mobile (inline) -->
                         <div class="sm:hidden">
-                            <img :src="'/images/spotify.svg'" alt="Spotify"
-                                class="w-11 h-11 sm:w-12 sm:h-12 text-green-500" />
+                            <button @click="openModal" class="hover:scale-105 transition">
+                                <img :src="'/images/spotify.svg'" alt="Spotify Logo" class="w-12 h-12">
+                            </button>
                         </div>
                     </div>
 
-                    <!-- Spotify logo on desktop -->
+                    <!-- Tombol Spotify -->
                     <div class="hidden sm:flex items-center justify-center w-full sm:w-auto">
-                        <img :src="'/images/spotify.svg'" alt="Spotify"
-                            class="w-11 h-11 sm:w-12 sm:h-12 text-green-500" />
+                        <button @click="openModal" class="hover:scale-105 transition">
+                            <img :src="'/images/spotify.svg'" alt="Spotify Logo" class="w-12 h-12">
+                        </button>
+                    </div>
+
+                    <!-- Modal -->
+                    <div ref="spotifyModal"
+                        class="fixed inset-0 z-50 bg-black/50 flex items-center justify-center hidden">
+                        <div
+                            class="bg-white p-2 sm:p-5 rounded-xl shadow-xl w-full max-w-xs sm:max-w-xl relative max-h-[33.5vh] sm:max-h-[46vh]">
+                            <!-- Tombol Close -->
+                            <button @click="closeModal" class="absolute top-3 right-3 text-gray-700 hover:text-black">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+
+                            <!-- Embed Spotify -->
+                            <iframe src="https://open.spotify.com/embed/track/45J4avUb9Ni0bnETYaYFVJ?go" width="100%"
+                                height="300" frameborder="0" allowtransparency="true" allow="encrypted-media"
+                                class="rounded-lg">
+                            </iframe>
+                        </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </MasterLayout>
