@@ -139,33 +139,39 @@ onUnmounted(() => {
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-3xl">
                 <Link v-for="confession in confessions" :key="confession.id"
                     :href="route('detail', { id: confession.id })"
-                    class="rounded-xl border shadow-lg border-gray-200 flex flex-col bg-white">
+                    class="rounded-xl border shadow-lg border-gray-200 flex flex-col bg-white h-full">
                 <!-- Card Content -->
-                <div class="p-4 sm:p-6 flex flex-col">
+                <div class="p-4 sm:p-6 flex flex-col flex-1">
                     <div class="text-left text-base sm:text-lg text-slate-500 mb-2">
                         hello <span class="text-xl sm:text-2xl font-milo font-bold text-slate-950">{{
                             confession.recipient_name }}</span>
                     </div>
                     <div class="text-left text-base sm:text-lg text-slate-500 mb-4">
-                        i want to say, <span class="text-xl sm:text-2xl font-milo font-bold text-slate-950">{{
-                            confession.message }} </span>
+                        i want to say,
+                        <span class="text-xl sm:text-2xl font-milo font-bold text-slate-950">
+                            {{
+                                confession.message.length > 50
+                                    ? confession.message.slice(0, 50) + '...'
+                                    : confession.message
+                            }}
+                        </span>
                     </div>
-                    <div class="flex flex-row justify-between items-center mt-6 gap-2">
+                    <div class="flex flex-row justify-between items-center mt-6 gap-2 flex-shrink-0">
                         <span class="text-slate-800 font-milo font-black">{{ confession.sender_name }}</span>
                         <span class="text-slate-500 text-xs sm:text-sm">{{ new
                             Date(confession.created_at).toLocaleString('en-US', {
-                            weekday: 'short',
-                            day: '2-digit',
-                            month: 'short',
-                            year: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit'
+                                weekday: 'short',
+                                day: '2-digit',
+                                month: 'short',
+                                year: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit'
                             }) }}</span>
                     </div>
                 </div>
                 <!-- Card Footer -->
                 <div
-                    class="flex flex-col sm:flex-row items-center justify-between border-t border-gray-200 px-4 sm:px-6 py-3 sm:py-4 bg-gray-50 rounded-b-xl gap-3">
+                    class="flex flex-col sm:flex-row items-center justify-between border-t border-gray-200 px-4 sm:px-6 py-3 sm:py-4 bg-gray-50 rounded-b-xl gap-3 mt-auto">
                     <div class="flex justify-between items-center w-full sm:w-auto">
                         <!-- Song info -->
                         <div class="flex items-center">
