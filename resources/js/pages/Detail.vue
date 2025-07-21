@@ -91,7 +91,7 @@ defineProps({
                 </h1>
 
                 <Link :href="route('submit')"
-                    class="px-6 py-2 bg-slate-900 text-white rounded hover:bg-slate-800 transition flex items-center gap-2">
+                    class="px-6 py-2 bg-slate-900 text-white rounded-md hover:bg-slate-800 transition flex items-center gap-2">
                 Tell your story
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
