@@ -14,5 +14,10 @@ class Confession extends Model
         'recipient_name',
         'message',
         'sender_name',
+        'song_id',
+        'song_title',
+        'song_artist',
+        'song_image',
+        'song_preview_url',
     ];
 }

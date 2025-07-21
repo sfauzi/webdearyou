@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\SpotifyController;
 use App\Http\Controllers\BrowseController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SubmitController;
@@ -15,6 +16,9 @@ Route::get('/browse/load-more', [BrowseController::class, 'loadMore'])->name('br
 Route::get('/detail/{id}', [BrowseController::class, 'detail'])->name('detail');
 Route::post('/submit', [SubmitController::class, 'store'])->name('submit.store');
 Route::get('/support', [HomeController::class, 'support'])->name('support');
+Route::get('/search', [SpotifyController::class, 'search']);
+Route::get('/track/{id}', [SpotifyController::class, 'getTrack']);
+
 
 // Route::get('dashboard', function () {
 //     return Inertia::render('Dashboard');

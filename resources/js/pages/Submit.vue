@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import MasterLayout from '@/layouts/MasterLayout.vue';
+import SongSelect from '@/pages/SongSelect.vue';
 import { Head, useForm, usePage } from '@inertiajs/vue3';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { defineProps } from 'vue';
 
 const props = defineProps(['currentDateTime']); // Menerima currentDateTime dari props
@@ -16,6 +17,15 @@ interface PageProps {
     errors: Record<string, string>;
 }
 
+interface Song {
+    id: string;
+    title: string;
+    artist: string;
+    image: string | null;
+    preview_url: string | null;
+    spotify_url: string;
+}
+
 // Mengambil flash messages dan errors dari page props dengan type assertion
 const page = usePage<PageProps>();
 const flashMessage = computed(() => (page.props.flash as FlashMessage) || {});
@@ -27,6 +37,7 @@ interface FormData {
     sender_name: string;
     message: string;
     recipient_name: string;
+    song_id: string;
 }
 
 // Setup form dengan useForm dari Inertia
@@ -34,7 +45,11 @@ const form = useForm<FormData>({
     sender_name: '',
     message: '',
     recipient_name: '',
+    song_id: '',
 });
+
+// Selected song state untuk preview
+const selectedSong = ref<Song | null>(null);
 
 // Function untuk submit form
 const submitForm = () => {
@@ -45,6 +60,12 @@ const submitForm = () => {
         },
     });
 };
+
+// Handle song selection
+const handleSongSelected = (song: Song | null) => {
+    selectedSong.value = song;
+};
+
 </script>
 
 <template>
@@ -115,42 +136,35 @@ const submitForm = () => {
                 </div>
 
                 <!-- Card Footer -->
-                <!--<div
+                <div
                     class="flex flex-col sm:flex-row items-center justify-between border-t border-gray-200 px-4 sm:px-6 py-3 sm:py-4 bg-gray-50 rounded-b-xl gap-3">
                     <div class="flex justify-between items-center w-full sm:w-auto">
-                        <!~~ Song info ~~>
+                        <!-- Song info -->
                         <div class="flex items-center">
-                            <img src="https://i.scdn.co/image/ab67616d0000b273fb8b07d29db0c456d7449e14" alt="Image"
+                            <img :src="selectedSong?.image || '/images/logo.svg'"
+                                :alt="selectedSong?.title || 'selected songs'"
                                 class="w-9 h-9 sm:w-10 sm:h-10 rounded-full mr-2 sm:mr-3" />
                             <div>
-                                <div class="font-bold text-slate-800 text-sm sm:text-base">Past Life</div>
-                                <div class="text-xs font-medium text-slate-600">Tame Impala</div>
+                                <div class="font-bold text-slate-800 text-sm sm:text-base">{{ selectedSong?.title ||
+                                    'Selected Songs' }}</div>
+                                <div class="text-xs font-medium text-slate-600">{{ selectedSong?.artist || 'artist name'
+                                }}</div>
                             </div>
                         </div>
 
-                        <!~~ Spotify logo on mobile (inline) ~~>
+                        <!-- Spotify logo on mobile (inline) -->
                         <div class="sm:hidden">
-                            <svg viewBox="0 0 168 168" class="w-6 h-6 text-green-500 ml-3" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="84" cy="84" r="84" fill="#000" />
-                                <path
-                                    d="M119.7 115.1c-1.7 2.8-5.3 3.7-8.1 2.1-22.2-13.6-50.2-16.7-83.2-9.3-3.2.7-6.4-1.3-7.1-4.5-.7-3.2 1.3-6.4 4.5-7.1 35.3-7.8 65.2-4.2 89.2 10.5 2.8 1.7 3.7 5.3 2.1 8.3zm11.6-23.6c-2.1 3.4-6.5 4.5-9.9 2.4-25.4-15.6-64.2-20.1-94.2-11.2-3.7 1-7.5-1.1-8.5-4.8-1-3.7 1.1-7.5 4.8-8.5 33.7-9.6 75.1-4.7 103.2 12.2 3.4 2.1 4.5 6.5 2.4 9.9zm0-25.2c-29.1-17.3-77.2-18.9-104.2-10.6-4.2 1.2-8.6-1.2-9.8-5.4-1.2-4.2 1.2-8.6 5.4-9.8 30.9-8.9 83.2-7.2 115.6 11.6 3.8 2.2 5.1 7.1 2.9 10.9-2.2 3.8-7.1 5.1-10.9 2.9z"
-                                    fill="#fff" />
-                            </svg>
+                            <img :src="'/images/spotify.svg'" alt="Spotify"
+                                class="w-11 h-11 sm:w-12 sm:h-12 text-green-500" />
                         </div>
                     </div>
 
-                    <!~~ Spotify logo on desktop ~~>
+                    <!-- Spotify logo on desktop -->
                     <div class="hidden sm:flex items-center justify-center w-full sm:w-auto">
-                        <svg viewBox="0 0 168 168" class="w-7 h-7 sm:w-8 sm:h-8 text-green-500" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="84" cy="84" r="84" fill="#000" />
-                            <path
-                                d="M119.7 115.1c-1.7 2.8-5.3 3.7-8.1 2.1-22.2-13.6-50.2-16.7-83.2-9.3-3.2.7-6.4-1.3-7.1-4.5-.7-3.2 1.3-6.4 4.5-7.1 35.3-7.8 65.2-4.2 89.2 10.5 2.8 1.7 3.7 5.3 2.1 8.3zm11.6-23.6c-2.1 3.4-6.5 4.5-9.9 2.4-25.4-15.6-64.2-20.1-94.2-11.2-3.7 1-7.5-1.1-8.5-4.8-1-3.7 1.1-7.5 4.8-8.5 33.7-9.6 75.1-4.7 103.2 12.2 3.4 2.1 4.5 6.5 2.4 9.9zm0-25.2c-29.1-17.3-77.2-18.9-104.2-10.6-4.2 1.2-8.6-1.2-9.8-5.4-1.2-4.2 1.2-8.6 5.4-9.8 30.9-8.9 83.2-7.2 115.6 11.6 3.8 2.2 5.1 7.1 2.9 10.9-2.2 3.8-7.1 5.1-10.9 2.9z"
-                                fill="#fff" />
-                        </svg>
+                        <img :src="'/images/spotify.svg'" alt="Spotify"
+                            class="w-11 h-11 sm:w-12 sm:h-12 text-green-500" />
                     </div>
-                </div>-->
+                </div>
             </div>
         </div>
 
@@ -159,6 +173,7 @@ const submitForm = () => {
             <form @submit.prevent="submitForm" class="w-full max-w-md sm:max-w-lg md:max-w-xl flex flex-col gap-4">
                 <!-- Recipient Name Input -->
                 <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-1">Recipient</label>
                     <input type="text" v-model="form.recipient_name" placeholder="Recipient Name" :class="[
                         'w-full text-slate-900 border rounded-lg px-3 py-2 text-base focus:outline-none focus:ring-1',
                         errors.recipient_name ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-slate-800'
@@ -168,6 +183,7 @@ const submitForm = () => {
 
                 <!-- Message Textarea -->
                 <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-1">Message</label>
                     <textarea v-model="form.message" placeholder="Your Message" :class="[
                         'w-full text-slate-900 border rounded-lg px-3 py-2 text-base focus:outline-none focus:ring-1 resize-none',
                         errors.message ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-slate-800'
@@ -177,11 +193,20 @@ const submitForm = () => {
 
                 <!-- Sender Name Input -->
                 <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-1">Your Name</label>
                     <input type="text" v-model="form.sender_name" placeholder="Your Name" :class="[
                         'w-full text-slate-900 border rounded-lg px-3 py-2 text-base focus:outline-none focus:ring-1',
                         errors.sender_name ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-slate-800'
                     ]" />
                     <p v-if="errors.sender_name" class="mt-1 text-sm text-red-600">{{ errors.sender_name }}</p>
+                </div>
+
+                <!-- Song Select -->
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-1">Choose a Song</label>
+                    <SongSelect v-model="form.song_id" :error="errors.song_id" @song-selected="handleSongSelected"
+                        placeholder="Search and select a song from Spotify" />
+                    <!-- <p v-if="errors.song_id" class="mt-1 text-sm text-red-600">{{ errors.song_id }}</p> -->
                 </div>
 
 
