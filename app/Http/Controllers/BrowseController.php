@@ -43,6 +43,9 @@ class BrowseController extends Controller
             ->latest()
             ->paginate($perPage, ['*'], 'page', $page);
 
+        // Tambahkan delay sebelum mengembalikan response
+        sleep(1);
+
         return response()->json([
             'confessions' => $confessions->items(),
             'hasMore' => $confessions->hasMorePages(),
