@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import MasterLayout from '@/layouts/MasterLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
-import { ref, onMounted, onUnmounted, watch } from 'vue';
-import { router } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
 import axios from 'axios';
+import { onMounted, onUnmounted, ref, watch } from 'vue';
 
 const props = defineProps<{
     confessions: {
@@ -30,17 +29,26 @@ const hasMore = ref(props.hasMore);
 const currentPage = ref(props.currentPage);
 
 // Watch untuk perubahan props (ketika search dilakukan)
-watch(() => props.confessions, (newConfessions) => {
-    confessions.value = [...newConfessions];
-});
+watch(
+    () => props.confessions,
+    (newConfessions) => {
+        confessions.value = [...newConfessions];
+    },
+);
 
-watch(() => props.hasMore, (newHasMore) => {
-    hasMore.value = newHasMore;
-});
+watch(
+    () => props.hasMore,
+    (newHasMore) => {
+        hasMore.value = newHasMore;
+    },
+);
 
-watch(() => props.currentPage, (newCurrentPage) => {
-    currentPage.value = newCurrentPage;
-});
+watch(
+    () => props.currentPage,
+    (newCurrentPage) => {
+        currentPage.value = newCurrentPage;
+    },
+);
 
 // Function untuk submit search
 const submitSearch = () => {
@@ -63,8 +71,8 @@ const loadMoreData = async () => {
         const response = await axios.get(route('browse.load-more'), {
             params: {
                 page: nextPage,
-                search: searchQuery.value
-            }
+                search: searchQuery.value,
+            },
         });
 
         const data = response.data;
@@ -73,7 +81,6 @@ const loadMoreData = async () => {
         confessions.value = [...confessions.value, ...data.confessions];
         hasMore.value = data.hasMore;
         currentPage.value = data.currentPage;
-
     } catch (error) {
         console.error('Error loading more data:', error);
     } finally {
@@ -100,109 +107,160 @@ onMounted(() => {
 onUnmounted(() => {
     window.removeEventListener('scroll', handleScroll);
 });
+
+// Modal
+const showModal = ref(false);
+const modalSongId = ref<string | null>(null);
+
+const openModal = (songId: string) => {
+    showModal.value = true;
+    modalSongId.value = songId;
+};
+
+const closeModal = () => {
+    showModal.value = false;
+    modalSongId.value = null;
+};
 </script>
 
 <template>
     <MasterLayout>
-
         <Head title="Browse Untold Stories"></Head>
 
-        <div class="flex justify-center mt-6 px-2">
-            <div
-                class="bg-blue-600 shadow rounded-lg px-4 py-3 sm:px-6 sm:py-4 flex items-center space-x-2 sm:space-x-3 max-w-3xl w-full">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6 text-blue-500 flex-shrink-0"
-                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div class="mt-6 flex justify-center px-2">
+            <div class="flex w-full max-w-3xl items-center space-x-2 rounded-lg bg-blue-600 px-4 py-3 shadow sm:space-x-3 sm:px-6 sm:py-4">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5 flex-shrink-0 text-blue-500 sm:h-6 sm:w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                >
                     <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="white" />
                     <path stroke="currentColor" stroke-width="2" d="M12 16v-4m0-4h.01" />
                 </svg>
                 <div class="flex-1">
-                    <div class="font-semibold text-white text-sm sm:text-base">Find Message</div>
-                    <div class="text-white text-xs sm:text-sm">
-                        Scroll the latest messages or start typing recipient name to find your messages.
-                    </div>
+                    <div class="text-sm font-semibold text-white sm:text-base">Find Message</div>
+                    <div class="text-xs text-white sm:text-sm">Scroll the latest messages or start typing recipient name to find your messages.</div>
                 </div>
             </div>
         </div>
 
-        <div class="flex justify-center mt-4 px-2">
-            <form @submit.prevent="submitSearch" class="flex max-w-3xl w-full flex-col sm:flex-row gap-2 sm:gap-0">
-                <input v-model="searchQuery" type="text" placeholder="Search recipient name..."
-                    class="flex-1 px-4 py-2 rounded-lg sm:rounded-l-lg border border-gray-300 focus:outline-none text-slate-900 text-sm sm:text-base mr-2" />
-                <button type="submit"
-                    class="px-4 py-2 bg-slate-800 text-white font-semibold rounded-lg sm:rounded-r-lg hover:bg-slate-700 transition text-sm sm:text-base mr-2">
+        <div class="mt-4 flex justify-center px-2">
+            <form @submit.prevent="submitSearch" class="flex w-full max-w-3xl flex-col gap-2 sm:flex-row sm:gap-0">
+                <input
+                    v-model="searchQuery"
+                    type="text"
+                    placeholder="Search recipient name..."
+                    class="mr-2 flex-1 rounded-lg border border-gray-300 px-4 py-2 text-sm text-slate-900 focus:outline-none sm:rounded-l-lg sm:text-base"
+                />
+                <button
+                    type="submit"
+                    class="mr-2 rounded-lg bg-slate-800 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-700 sm:rounded-r-lg sm:text-base"
+                >
                     Search
                 </button>
             </form>
         </div>
 
-        <div class="flex justify-center py-10 px-2">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-3xl">
-                <Link v-for="confession in confessions" :key="confession.id"
-                    :href="route('detail', { id: confession.id })"
-                    class="rounded-xl border shadow-lg border-gray-200 flex flex-col bg-white h-full">
-                <!-- Card Content -->
-                <div class="p-4 sm:p-6 flex flex-col flex-1">
-                    <div class="text-left text-base sm:text-lg text-slate-500 mb-2">
-                        hello <span class="text-xl sm:text-2xl font-milo font-bold text-slate-950">{{
-                            confession.recipient_name }}</span>
-                    </div>
-                    <div class="text-left text-base sm:text-lg text-slate-500 mb-4">
-                        i want to say,
-                        <span class="text-xl sm:text-2xl font-milo font-bold text-slate-950">
-                            {{
-                                confession.message.length > 50
-                                    ? confession.message.slice(0, 50) + '...'
-                                    : confession.message
-                            }}
-                        </span>
-                    </div>
-                    <div class="flex flex-row justify-between items-center mt-6 gap-2 flex-shrink-0">
-                        <span class="text-slate-800 font-milo font-black">{{ confession.sender_name }}</span>
-                        <span class="text-slate-500 text-xs sm:text-sm">{{ new
-                            Date(confession.created_at).toLocaleString('en-US', {
-                                weekday: 'short',
-                                day: '2-digit',
-                                month: 'short',
-                                year: 'numeric',
-                                hour: '2-digit',
-                                minute: '2-digit'
-                            }) }}</span>
-                    </div>
-                </div>
-                <!-- Card Footer -->
+        <div class="flex justify-center px-2 py-10">
+            <div class="grid w-full max-w-3xl grid-cols-1 gap-6 md:grid-cols-2">
                 <div
-                    class="flex flex-col sm:flex-row items-center justify-between border-t border-gray-200 px-4 sm:px-6 py-3 sm:py-4 bg-gray-50 rounded-b-xl gap-3 mt-auto">
-                    <div class="flex justify-between items-center w-full sm:w-auto">
-                        <!-- Song info -->
-                        <div class="flex items-center">
-                            <img :src="confession.song_image" :alt="confession.song_title"
-                                class="w-9 h-9 sm:w-10 sm:h-10 rounded-full mr-2 sm:mr-3" />
-                            <div>
-                                <div class="font-bold text-slate-800 text-sm sm:text-base">{{ confession.song_title }}
+                    v-for="confession in confessions"
+                    :key="confession.id"
+                    class="flex h-full flex-col rounded-xl border border-gray-200 bg-white shadow-lg"
+                >
+                    <!-- Card Content (clickable) -->
+                    <Link :href="route('detail', { id: confession.id })" class="flex flex-1 cursor-pointer flex-col p-4 sm:p-6">
+                        <div class="mb-2 text-left text-base text-slate-500 sm:text-lg">
+                            hello <span class="font-milo text-xl font-bold text-slate-950 sm:text-2xl">{{ confession.recipient_name }}</span>
+                        </div>
+                        <div class="mb-4 text-left text-base text-slate-500 sm:text-lg">
+                            i want to say,
+                            <span class="font-milo text-xl font-bold text-slate-950 sm:text-2xl">
+                                {{ confession.message.length > 50 ? confession.message.slice(0, 50) + '...' : confession.message }}
+                            </span>
+                        </div>
+                        <div class="mt-6 flex flex-shrink-0 flex-row items-center justify-between gap-2">
+                            <span class="font-milo font-black text-slate-800">{{ confession.sender_name }}</span>
+                            <span class="text-xs text-slate-500 sm:text-sm">{{
+                                new Date(confession.created_at).toLocaleString('en-US', {
+                                    weekday: 'short',
+                                    day: '2-digit',
+                                    month: 'short',
+                                    year: 'numeric',
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                })
+                            }}</span>
+                        </div>
+                    </Link>
+                    <!-- Card Footer (NOT clickable) -->
+                    <div
+                        class="mt-auto flex flex-col items-center justify-between gap-3 rounded-b-xl border-t border-gray-200 bg-gray-50 px-4 py-3 select-none sm:flex-row sm:px-6 sm:py-4"
+                    >
+                        <div class="flex w-full items-center justify-between sm:w-auto">
+                            <!-- Song info -->
+                            <div class="flex items-center">
+                                <img
+                                    :src="confession.song_image"
+                                    :alt="confession.song_title"
+                                    class="mr-2 h-9 w-9 rounded-full sm:mr-3 sm:h-10 sm:w-10"
+                                />
+                                <div>
+                                    <div class="text-sm font-bold text-slate-800 sm:text-base">{{ confession.song_title }}</div>
+                                    <div class="text-xs font-medium text-slate-600">{{ confession.song_artist }}</div>
                                 </div>
-                                <div class="text-xs font-medium text-slate-600">{{ confession.song_artist }}</div>
+                            </div>
+                            <!-- Spotify logo on mobile (inline) -->
+                            <div class="sm:hidden">
+                                <button @click="openModal(confession.song_id)" class="transition hover:scale-105">
+                                    <img :src="'/images/spotify.svg'" alt="Spotify" class="h-11 w-11 text-green-500 sm:h-12 sm:w-12" />
+                                </button>
                             </div>
                         </div>
-                        <!-- Spotify logo on mobile (inline) -->
-                        <div class="sm:hidden">
-                            <img :src="'/images/spotify.svg'" alt="Spotify"
-                                class="w-11 h-11 sm:w-12 sm:h-12 text-green-500" />
+                        <!-- Spotify logo on desktop -->
+                        <div class="hidden w-full items-center justify-center sm:flex sm:w-auto">
+                            <button @click="openModal(confession.song_id)" class="transition hover:scale-105">
+                                <img :src="'/images/spotify.svg'" alt="Spotify" class="h-11 w-11 text-green-500 sm:h-12 sm:w-12" />
+                            </button>
+                        </div>
+
+                        <!-- Modal -->
+                        <div
+                            v-if="showModal && modalSongId === confession.song_id"
+                            class="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+                        >
+                            <div class="bg-white p-2 sm:p-5 rounded-xl shadow-xl w-full max-w-xs sm:max-w-xl relative max-h-[37.5vh] sm:max-h-[46vh]">
+                                <!-- Tombol Close -->
+                                <button @click="closeModal" class="absolute top-3 right-3 text-gray-700 hover:text-black">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+
+                                <!-- Embed Spotify -->
+                                <iframe
+                                    :src="`https://open.spotify.com/embed/track/${confession.song_id}`"
+                                    width="100%"
+                                    height="300"
+                                    frameborder="0"
+                                    allowtransparency="true"
+                                    allow="encrypted-media"
+                                    class="rounded-lg"
+                                >
+                                </iframe>
+                            </div>
                         </div>
                     </div>
-                    <!-- Spotify logo on desktop -->
-                    <div class="hidden sm:flex items-center justify-center w-full sm:w-auto">
-                        <img :src="'/images/spotify.svg'" alt="Spotify"
-                            class="w-11 h-11 sm:w-12 sm:h-12 text-green-500" />
-                    </div>
                 </div>
-                </Link>
             </div>
         </div>
 
         <!-- Loading indicator -->
         <div v-if="isLoading" class="flex justify-center py-8">
             <div class="flex items-center space-x-2">
-                <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-slate-800"></div>
+                <div class="h-6 w-6 animate-spin rounded-full border-b-2 border-slate-800"></div>
                 <span class="text-slate-600">Loading more messages...</span>
             </div>
         </div>
@@ -214,16 +272,15 @@ onUnmounted(() => {
 
         <!-- No messages found -->
         <div v-if="confessions.length === 0 && searchQuery">
-            <p class="text-slate-500 text-center">
-                No messages found for "<strong>{{ searchQuery }}</strong>"
+            <p class="text-center text-slate-500">
+                No messages found for "<strong>{{ searchQuery }}</strong
+                >"
             </p>
         </div>
 
         <!-- No messages at all -->
         <div v-if="confessions.length === 0 && !searchQuery">
-            <p class="text-slate-500 text-center">
-                No messages available
-            </p>
+            <p class="text-center text-slate-500">No messages available</p>
         </div>
     </MasterLayout>
 </template>
