@@ -197,7 +197,7 @@ const closeModal = () => {
                     </Link>
                     <!-- Card Footer (NOT clickable) -->
                     <div
-                        class="mt-auto flex flex-col items-center justify-between gap-3 rounded-b-xl border-t border-gray-200 bg-gray-50 px-4 py-3 select-none sm:flex-row sm:px-6 sm:py-4"
+                        class="mt-auto flex flex-col items-center justify-between gap-3 rounded-b-xl border-t border-gray-200 bg-gray-100/80 px-4 py-3 select-none sm:flex-row sm:px-6 sm:py-4"
                     >
                         <div class="flex w-full items-center justify-between sm:w-auto">
                             <!-- Song info -->

@@ -1,11 +1,28 @@
 <script setup lang="ts">
-
 import MasterLayout from '@/layouts/MasterLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
-import { defineProps, ref } from 'vue';
+import { defineProps, ref, computed } from 'vue';
+import Marquee from '@/components/Marquee.vue';
+import ConfessionCard from '@/components/ConfessionCard.vue';
 
-const props = defineProps(['currentDateTime']);
+
+interface Confession {
+    id: number;
+    recipient_name: string;
+    message: string;
+    sender_name: string;
+    song_id: string;
+    song_title: string;
+    song_artist: string;
+    song_image: string;
+    created_at: string;
+}
+
+const props = defineProps<{
+    currentDateTime: string;
+    confessions: Confession[];
+}>();
 
 const spotifyModal = ref<HTMLElement | null>(null);
 
@@ -16,6 +33,15 @@ const openModal = () => {
 const closeModal = () => {
     spotifyModal.value?.classList.add('hidden');
 };
+
+// Split confessions into two arrays for two marquee rows
+const firstRowConfessions = computed(() => {
+    return props.confessions.filter((_, index) => index % 2 === 0);
+});
+
+const secondRowConfessions = computed(() => {
+    return props.confessions.filter((_, index) => index % 2 === 1);
+});
 
 </script>
 
@@ -81,13 +107,13 @@ const closeModal = () => {
                 </div>
                 <!-- Card Footer -->
                 <div
-                    class="flex flex-col sm:flex-row items-center justify-between border-t border-gray-200 px-4 sm:px-6 py-3 sm:py-4 bg-gray-50 rounded-b-xl gap-3">
+                    class="flex flex-col sm:flex-row items-center justify-between border-t border-gray-200 px-4 sm:px-6 py-3 sm:py-4 bg-gray-100/80 rounded-b-xl gap-3">
 
                     <div class="flex justify-between items-center w-full sm:w-auto">
                         <!-- Song info -->
                         <div class="flex items-center">
                             <img src="https://i.scdn.co/image/ab67616d0000b273d9985092cd88bffd97653b58" alt="Image"
-                                class="w-9 h-9 sm:w-10 sm:h-10 rounded-full mr-2 sm:mr-3" />
+                                class="w-11 h-11 sm:w-12 sm:h-12 rounded-full mr-2 sm:mr-3" />
                             <div>
                                 <div class="font-bold text-slate-800 text-sm sm:text-base">luther (with sza)</div>
                                 <div class="text-xs font-medium text-slate-600">Kendrick Lamar, SZA</div>
@@ -131,6 +157,24 @@ const closeModal = () => {
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div class="w-full py-10 overflow-hidden">
+            <!-- First Row - Left to Right -->
+            <div class="mb-6">
+                <Marquee :pauseOnHover="true" :reverse="false" class="[--duration:60s]">
+                    <ConfessionCard v-for="confession in firstRowConfessions" :key="`row1-${confession.id}`"
+                        :confession="confession" />
+                </Marquee>
+            </div>
+
+            <!-- Second Row - Right to Left -->
+            <div>
+                <Marquee :pauseOnHover="true" :reverse="true" class="[--duration:60s]">
+                    <ConfessionCard v-for="confession in secondRowConfessions" :key="`row2-${confession.id}`"
+                        :confession="confession" />
+                </Marquee>
             </div>
         </div>
     </MasterLayout>
