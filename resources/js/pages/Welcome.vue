@@ -6,6 +6,7 @@ import { defineProps, ref, computed } from 'vue';
 import Marquee from '@/components/Marquee.vue';
 import ConfessionCard from '@/components/ConfessionCard.vue';
 import GlowingEffect from '@/components/ui/glowing-effect/GlowingEffect.vue';
+import FluidCursor from '@/components/ui/fluid-cursor/FluidCursor.vue';
 
 interface Confession {
     id: number;
@@ -42,9 +43,13 @@ const firstRowConfessions = computed(() => {
 const secondRowConfessions = computed(() => {
     return props.confessions.filter((_, index) => index % 2 === 1);
 });
+
+const enabled = ref(true);
+
 </script>
 
 <template>
+
     <Head title="For everything you couldn't say">
         <link rel="preconnect" href="https://rsms.me/" />
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
@@ -53,6 +58,8 @@ const secondRowConfessions = computed(() => {
     <MasterLayout>
         <div
             class="container mx-auto px-4 py-8 flex flex-col items-center justify-center text-center max-w-2xl sm:max-w-3xl md:max-w-5xl lg:max-w-7xl">
+            <FluidCursor v-if="enabled" />
+
             <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 text-slate-800 font-milo leading-tight">
                 dear you,<br>
                 <span class="block">for everything you couldn't say</span>
@@ -83,6 +90,7 @@ const secondRowConfessions = computed(() => {
                 </svg>
                 </Link>
             </div>
+
         </div>
 
         <!-- Card Example with GlowingEffect -->
@@ -91,27 +99,21 @@ const secondRowConfessions = computed(() => {
                 <!-- GlowingEffect wrapper -->
                 <div class="relative">
                     <!-- Card dengan GlowingEffect -->
-                    <div class="rounded-xl border shadow-lg border-gray-200/50 flex flex-col bg-white/95 relative overflow-hidden">
+                    <div
+                        class="rounded-xl border shadow-lg border-gray-200/50 flex flex-col bg-white/95 relative overflow-hidden">
                         <!-- GlowingEffect Component -->
-                        <GlowingEffect 
-                            :disabled="false"
-                            :blur="0.5"
-                            :proximity="100"
-                            :spread="35"
-                            :movementDuration="1.5"
-                            :borderWidth="4"
-                            variant="default"
-                            :glow="true"
-                            class="absolute inset-0 rounded-xl"
-                        />
-                        
+                        <GlowingEffect :disabled="false" :blur="0.5" :proximity="100" :spread="35"
+                            :movementDuration="1.5" :borderWidth="4" variant="default" :glow="true"
+                            class="absolute inset-0 rounded-xl" />
+
                         <!-- Card Content -->
                         <div class="p-4 sm:p-6 flex flex-col relative z-10">
                             <div class="text-left text-base sm:text-lg text-slate-500 mb-2">
                                 hello <span class="text-xl sm:text-2xl font-milo font-bold text-slate-950">anjani</span>
                             </div>
                             <div class="text-left text-base sm:text-lg text-slate-500 mb-4">
-                                i want to say, <span class="text-xl sm:text-2xl font-milo font-bold text-slate-950">i hope that
+                                i want to say, <span class="text-xl sm:text-2xl font-milo font-bold text-slate-950">i
+                                    hope that
                                     one day we can meet again,... i miss you</span>
                             </div>
                             <div class="flex flex-row justify-between items-center mt-6 gap-2">
@@ -119,16 +121,18 @@ const secondRowConfessions = computed(() => {
                                 <span class="text-slate-500 text-xs sm:text-sm">{{ currentDateTime }}</span>
                             </div>
                         </div>
-                        
+
                         <!-- Card Footer -->
-                        <div class="flex flex-col sm:flex-row items-center justify-between border-t border-gray-200 px-4 sm:px-6 py-3 sm:py-4 bg-gray-100/80 rounded-b-xl gap-3 relative z-10">
+                        <div
+                            class="flex flex-col sm:flex-row items-center justify-between border-t border-gray-200 px-4 sm:px-6 py-3 sm:py-4 bg-gray-100/80 rounded-b-xl gap-3 relative z-10">
                             <div class="flex justify-between items-center w-full sm:w-auto">
                                 <!-- Song info -->
                                 <div class="flex items-center">
-                                    <img src="https://i.scdn.co/image/ab67616d0000b273d9985092cd88bffd97653b58" alt="Image"
-                                        class="w-11 h-11 sm:w-12 sm:h-12 rounded-full mr-2 sm:mr-3" />
+                                    <img src="https://i.scdn.co/image/ab67616d0000b273d9985092cd88bffd97653b58"
+                                        alt="Image" class="w-11 h-11 sm:w-12 sm:h-12 rounded-full mr-2 sm:mr-3" />
                                     <div>
-                                        <div class="font-bold text-slate-800 text-sm sm:text-base">luther (with sza)</div>
+                                        <div class="font-bold text-slate-800 text-sm sm:text-base">luther (with sza)
+                                        </div>
                                         <div class="text-xs font-medium text-slate-600">Kendrick Lamar, SZA</div>
                                     </div>
                                 </div>
