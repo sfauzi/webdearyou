@@ -1,6 +1,6 @@
 <template>
     <div
-        class="bg-white rounded-xl border border-gray-200 shadow-md mx-2 min-w-[420px] max-w-[420px] flex-shrink-0 hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden">
+        class="bg-white rounded-xl border border-gray-200 shadow-md mx-2 min-w-[420px] max-w-[420px] flex-shrink-0 hover:shadow-md transition-all duration-300 cursor-pointer overflow-hidden">
 
         <!-- Main Content -->
         <div class="p-6">
@@ -88,10 +88,5 @@ const handleImageError = (event: Event) => {
     target.src = '/images/default-song.jpg';
 };
 
-// Open Spotify link
-const openSpotify = (confession: Confession) => {
-    if (confession.song_id) {
-        window.open(confession.song_id, '_blank');
-    }
-};
+
 </script>
