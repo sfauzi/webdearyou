@@ -7,6 +7,7 @@ import Marquee from '@/components/Marquee.vue';
 import ConfessionCard from '@/components/ConfessionCard.vue';
 import GlowingEffect from '@/components/ui/glowing-effect/GlowingEffect.vue';
 import FluidCursor from '@/components/ui/fluid-cursor/FluidCursor.vue';
+import TextGenerateEffect from '@/components/ui/text-generate-effect/TextGenerateEffect.vue';
 
 interface Confession {
     id: number;
@@ -47,6 +48,37 @@ const secondRowConfessions = computed(() => {
 const enabled = ref(true);
 
 </script>
+
+<style scoped>
+.inline-text-container {
+    display: inline;
+    line-height: normal;
+    word-spacing: normal;
+    letter-spacing: normal;
+}
+
+.force-inline :deep(div) {
+    display: inline !important;
+    word-spacing: normal !important;
+    letter-spacing: normal !important;
+}
+
+.force-inline :deep(span) {
+    display: inline !important;
+    word-spacing: normal !important;
+    letter-spacing: normal !important;
+    margin-right: 0 !important;
+    padding-right: 0 !important;
+}
+
+.force-inline {
+    display: inline !important;
+    vertical-align: baseline;
+    margin-left: 4px;
+    word-spacing: normal !important;
+    letter-spacing: normal !important;
+}
+</style>
 
 <template>
 
@@ -109,12 +141,29 @@ const enabled = ref(true);
                         <!-- Card Content -->
                         <div class="p-4 sm:p-6 flex flex-col relative z-10">
                             <div class="text-left text-base sm:text-lg text-slate-500 mb-2">
-                                hello <span class="text-xl sm:text-2xl font-milo font-bold text-slate-950">anjani</span>
+                                <ClientOnly>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-base sm:text-lg">
+                                            hello
+                                        </span>
+                                        <span class="text-xl sm:text-2xl font-milo font-bold text-slate-950">
+                                            <TextGenerateEffect words="anjani" />
+                                        </span>
+                                    </div>
+                                </ClientOnly>
                             </div>
                             <div class="text-left text-base sm:text-lg text-slate-500 mb-4">
-                                i want to say, <span class="text-xl sm:text-2xl font-milo font-bold text-slate-950">i
-                                    hope that
-                                    one day we can meet again,... i miss you</span>
+                                <ClientOnly>
+                                    <div class="inline-text-container">
+                                        i want to say,<span
+                                            class="text-xl sm:text-2xl font-milo font-bold text-slate-950 force-inline">
+                                            <TextGenerateEffect
+                                                words="i hope that one day we can meet again,... i miss you" />
+                                        </span>
+                                    </div>
+                                </ClientOnly>
+
+
                             </div>
                             <div class="flex flex-row justify-between items-center mt-6 gap-2">
                                 <span class="text-slate-800 font-milo font-black">rahul</span>
